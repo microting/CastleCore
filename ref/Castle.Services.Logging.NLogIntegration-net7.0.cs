@@ -1,26 +1,25 @@
 [assembly: System.CLSCompliant(true)]
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/castleproject/Core")]
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
-[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
-namespace Castle.Services.Logging.Log4netIntegration
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v7.0", FrameworkDisplayName=".NET 7.0")]
+namespace Castle.Services.Logging.NLogIntegration
 {
-    public class ExtendedLog4netFactory : Castle.Core.Logging.AbstractExtendedLoggerFactory
+    public class ExtendedNLogFactory : Castle.Core.Logging.AbstractExtendedLoggerFactory
     {
-        public ExtendedLog4netFactory() { }
-        public ExtendedLog4netFactory(bool configuredExternally) { }
-        public ExtendedLog4netFactory(System.IO.Stream config) { }
-        public ExtendedLog4netFactory(string configFile) { }
+        public ExtendedNLogFactory() { }
+        public ExtendedNLogFactory(NLog.Config.LoggingConfiguration loggingConfiguration) { }
+        public ExtendedNLogFactory(bool configuredExternally) { }
+        public ExtendedNLogFactory(string configFile) { }
         public override Castle.Core.Logging.IExtendedLogger Create(string name) { }
         public override Castle.Core.Logging.IExtendedLogger Create(string name, Castle.Core.Logging.LoggerLevel level) { }
     }
-    public class ExtendedLog4netLogger : Castle.Services.Logging.Log4netIntegration.Log4netLogger, Castle.Core.Logging.IExtendedLogger, Castle.Core.Logging.ILogger
+    public class ExtendedNLogLogger : Castle.Services.Logging.NLogIntegration.NLogLogger, Castle.Core.Logging.IExtendedLogger, Castle.Core.Logging.ILogger
     {
-        public ExtendedLog4netLogger(log4net.Core.ILogger logger, Castle.Services.Logging.Log4netIntegration.ExtendedLog4netFactory factory) { }
-        public ExtendedLog4netLogger(log4net.ILog log, Castle.Services.Logging.Log4netIntegration.ExtendedLog4netFactory factory) { }
+        public ExtendedNLogLogger(NLog.Logger logger, Castle.Services.Logging.NLogIntegration.ExtendedNLogFactory factory) { }
         public Castle.Core.Logging.IContextProperties GlobalProperties { get; }
         public Castle.Core.Logging.IContextProperties ThreadProperties { get; }
         public Castle.Core.Logging.IContextStacks ThreadStacks { get; }
-        protected new Castle.Services.Logging.Log4netIntegration.ExtendedLog4netFactory Factory { get; set; }
+        protected new Castle.Services.Logging.NLogIntegration.ExtendedNLogFactory Factory { get; set; }
         public override Castle.Core.Logging.ILogger CreateChildLogger(string name) { }
         public Castle.Core.Logging.IExtendedLogger CreateExtendedChildLogger(string name) { }
     }
@@ -29,26 +28,26 @@ namespace Castle.Services.Logging.Log4netIntegration
         public GlobalContextProperties() { }
         public object this[string key] { get; set; }
     }
-    public class Log4netFactory : Castle.Core.Logging.AbstractLoggerFactory
+    public class NLogFactory : Castle.Core.Logging.AbstractLoggerFactory
     {
-        public Log4netFactory() { }
-        public Log4netFactory(bool configuredExternally) { }
-        public Log4netFactory(System.IO.Stream config) { }
-        public Log4netFactory(string configFile) { }
+        public NLogFactory() { }
+        public NLogFactory(NLog.Config.LoggingConfiguration loggingConfiguration) { }
+        public NLogFactory(bool configuredExternally) { }
+        public NLogFactory(string configFile) { }
         public override Castle.Core.Logging.ILogger Create(string name) { }
         public override Castle.Core.Logging.ILogger Create(string name, Castle.Core.Logging.LoggerLevel level) { }
     }
-    public class Log4netLogger : Castle.Core.Logging.ILogger
+    public class NLogLogger : Castle.Core.Logging.ILogger
     {
-        public Log4netLogger(log4net.Core.ILogger logger, Castle.Services.Logging.Log4netIntegration.Log4netFactory factory) { }
-        protected Castle.Services.Logging.Log4netIntegration.Log4netFactory Factory { get; set; }
+        public NLogLogger(NLog.Logger logger, Castle.Services.Logging.NLogIntegration.NLogFactory factory) { }
+        protected Castle.Services.Logging.NLogIntegration.NLogFactory Factory { get; set; }
         public bool IsDebugEnabled { get; }
         public bool IsErrorEnabled { get; }
         public bool IsFatalEnabled { get; }
         public bool IsInfoEnabled { get; }
         public bool IsTraceEnabled { get; }
         public bool IsWarnEnabled { get; }
-        protected log4net.Core.ILogger Logger { get; set; }
+        protected NLog.Logger Logger { get; set; }
         public virtual Castle.Core.Logging.ILogger CreateChildLogger(string name) { }
         public void Debug(System.Func<string> messageFactory) { }
         public void Debug(string message) { }
@@ -101,7 +100,7 @@ namespace Castle.Services.Logging.Log4netIntegration
     }
     public class ThreadContextStack : Castle.Core.Logging.IContextStack
     {
-        public ThreadContextStack(log4net.Util.ThreadContextStack log4netStack) { }
+        public ThreadContextStack() { }
         public int Count { get; }
         public void Clear() { }
         public string Pop() { }

@@ -16,3 +16,4 @@ obj/
 /DesktopClrTestResults.xml
 /DesktopClrWeakNamedTestResults.xml
 /NetCoreClrWeakNamedTestResults.xml
+.idea
