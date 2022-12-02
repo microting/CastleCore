@@ -3,7 +3,7 @@
 	<Import Project="..\..\buildscripts\common.props"></Import>
 
 	<PropertyGroup>
-		<TargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0</TargetFrameworks>
+		<TargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -54,6 +54,7 @@
 		<ProjectReference Include="..\Castle.Services.Logging.log4netIntegration\Castle.Services.Logging.log4netIntegration.csproj" />
 		<ProjectReference Include="..\Castle.Services.Logging.NLogIntegration\Castle.Services.Logging.NLogIntegration.csproj" />
 		<ProjectReference Include="..\Castle.Services.Logging.SerilogIntegration\Castle.Services.Logging.SerilogIntegration.csproj" />
+		<PackageReference Update="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'OR'$(TargetFramework)'=='netcoreapp3.1'">
 		<PackageReference Include="System.Security.Permissions" Version="4.7.0" />
@@ -63,9 +64,9 @@
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
 		<PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
-		<PackageReference Include="System.Net.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.Net.Primitives" Version="4.3.1" />
 	</ItemGroup>
-	
+
 	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
 		<PackageReference Include="PublicApiGenerator" Version="10.1.2" />
 	</ItemGroup>

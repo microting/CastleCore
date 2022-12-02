@@ -3,7 +3,7 @@
 	<Import Project="..\..\buildscripts\common.props"></Import>
 
 	<PropertyGroup>
-		<TargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0</TargetFrameworks>
+		<TargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -32,6 +32,7 @@
 		<ProjectReference Include="..\Castle.Services.Logging.log4netIntegration\Castle.Services.Logging.log4netIntegration.csproj" />
 		<ProjectReference Include="..\Castle.Services.Logging.NLogIntegration\Castle.Services.Logging.NLogIntegration.csproj" />
 		<ProjectReference Include="..\Castle.Services.Logging.SerilogIntegration\Castle.Services.Logging.SerilogIntegration.csproj" />
+		<PackageReference Update="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
