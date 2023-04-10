@@ -14,6 +14,7 @@
 
 namespace Castle.DynamicProxy.Tests
 {
+	using System;
 	using System.IO;
 	using System.Linq;
 	using System.Reflection;
@@ -113,6 +114,53 @@ namespace Castle.DynamicProxy.Tests
 		}
 
 		[Test]
+		public void EnsureProxyHasNestedAttributesOnClassAndMethods()
+		{
+			var instance = (HasNestedNonInheritableAttribute)generator.CreateClassProxy(typeof(HasNestedNonInheritableAttribute), new StandardInterceptor());
+
+			object[] attributes = instance.GetType().GetCustomAttributes(typeof(Nested.NonInheritableAttribute), false).ToArray();
+			Assert.AreEqual(1, attributes.Length);
+			Assert.IsInstanceOf(typeof(Nested.NonInheritableAttribute), attributes[0]);
+
+			attributes = instance.GetType().GetMethod("OnMethod").GetCustomAttributes(typeof(Nested.NonInheritableAttribute), false).ToArray();
+			Assert.AreEqual(1, attributes.Length);
+			Assert.IsInstanceOf(typeof(Nested.NonInheritableAttribute), attributes[0]);
+		}
+
+		[Test]
+		public void EnsureProxyHasNestedAttributesOnProperties()
+		{
+			var proxy = generator.CreateClassProxy<HasNestedNonInheritableAttribute>();
+			var nameProperty = proxy.GetType().GetProperty("OnProperty");
+			Assert.IsTrue(nameProperty.IsDefined(typeof(Nested.NonInheritableAttribute), false));
+		}
+
+		[Test, Ignore("Not supported. Is it possible? There seems to be no API to allow that.")]
+		public void EnsureProxyHasNestedAttributesOnOnReturn()
+		{
+			var proxy = generator.CreateClassProxy<HasNestedNonInheritableAttribute>();
+			var nameProperty = proxy.GetType().GetMethod("OnReturn").ReturnParameter;
+			Assert.IsTrue(nameProperty.IsDefined(typeof(Nested.NonInheritableAttribute), false));
+		}
+
+		[Test]
+		public void EnsureProxyHasNestedAttributesOnParameter()
+		{
+			var proxy = generator.CreateClassProxy<HasNestedNonInheritableAttribute>();
+			ParameterInfo nameProperty = proxy.GetType().GetMethod("OnParameter").GetParameters().Single();
+			Assert.IsTrue(nameProperty.IsDefined(typeof(Nested.NonInheritableAttribute), false));
+		}
+
+		[Test]
+		[Platform(Exclude = "Mono", Reason = "Mono does not currently emit custom attributes on generic type parameters of methods. See https://github.com/mono/mono/issues/8512.")]
+		public void EnsureProxyHasNestedAttributesOnGenericArgument()
+		{
+			var proxy = generator.CreateClassProxy<HasNestedNonInheritableAttribute>();
+			var nameProperty = proxy.GetType().GetMethod("OnGenericArgument").GetGenericArguments().Single();
+			Assert.IsTrue(nameProperty.IsDefined(typeof(Nested.NonInheritableAttribute), false));
+		}
+
+		[Test]
 		public void Can_proxy_type_with_non_inheritable_attribute_depending_on_array_of_something_via_property()
 		{
 			var proxy = generator.CreateInterfaceProxyWithoutTarget<IHasNonInheritableAttributeWithArray>();
@@ -131,5 +179,22 @@ namespace Castle.DynamicProxy.Tests
 				.Cast<NonInheritableWithArray2Attribute>().Single();
 			CollectionAssert.AreEqual(attribute.Values, new[] { "1", "2", "3" });
 		}
+
+		[TestCase(typeof(HasAttributeWithNullAsPositionalArgument))]
+		[TestCase(typeof(HasAttributeWithEmptyArrayAsPositionalArgument))]
+		[TestCase(typeof(HasAttributeWithNullInArrayAsPositionalArgument))]
+		public void Can_proxy_type_with_attribute_with_positional_array_parameter(Type classType)
+		{
+			_ = generator.CreateClassProxy(classType);
+		}
+
+		[NonInheritableAttributeWithPositionalArrayParameter(null)]
+		public class HasAttributeWithNullAsPositionalArgument{ }
+
+		[NonInheritableAttributeWithPositionalArrayParameter(new object[0])]
+		public class HasAttributeWithEmptyArrayAsPositionalArgument { }
+
+		[NonInheritableAttributeWithPositionalArrayParameter(new object[1] { null })]
+		public class HasAttributeWithNullInArrayAsPositionalArgument { }
 	}
 }

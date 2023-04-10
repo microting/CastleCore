@@ -1,5 +1,18 @@
 # Castle Core Changelog
 
+## Unreleased
+
+Enhancements:
+- Two new generic method overloads `proxyGenerator.CreateClassProxy<TClass>([options], constructorArguments, interceptors)` (@backstromjoel, #636)
+- Allow specifying which attributes should always be copied to proxy class by adding attribute type to `AttributesToAlwaysReplicate`. Previously only non-inherited, with `Inherited=false`, attributes were copied. (@shoaibshakeel381, #633)
+
+## 5.1.1 (2022-12-30)
+
+Bugfixes:
+- Proxies using records derived from a base generic record broken using .NET 6 compiler (@CesarD, #632)
+- Failure proxying type that has a non-inheritable custom attribute type applied where `null` argument is given for array parameter  (@stakx, #637)
+- Nested custom attribute types do not get replicated (@stakx, #638)
+
 ## 5.1.0 (2022-08-02)
 
 Enhancements:

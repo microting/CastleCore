@@ -35,8 +35,6 @@ jobs:
         with:
           dotnet-version: 3.1.x
 
-      # Building requires an up-to-date .NET SDK.
-
       - name: Install .NET 6.0
         uses: actions/setup-dotnet@v3
         with:

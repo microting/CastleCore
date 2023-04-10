@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2022 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2022 Castle Project - http://www.castleproject.org/
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Castle.DynamicProxy.Tests.Records
+namespace Castle.DynamicProxy.Tests.Classes
 {
-	public record DerivedEmptyRecord : EmptyRecord
+	using System;
+
+#if FEATURE_SERIALIZATION
+	[Serializable]
+#endif
+	[AttributeUsage(AttributeTargets.All, Inherited = false)]
+	public class NonInheritableAttributeWithPositionalArrayParameterAttribute : Attribute
 	{
+		public NonInheritableAttributeWithPositionalArrayParameterAttribute(object[] arg)
+		{
+		}
 	}
 }
